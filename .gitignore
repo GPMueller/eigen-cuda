@@ -1,4 +1,4 @@
-
+run
 build/*
 
 # Created by https://www.gitignore.io/api/c++,c,cuda,cmake,linux,windows,osx
