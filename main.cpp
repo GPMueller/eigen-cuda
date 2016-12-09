@@ -1,10 +1,10 @@
-#include <kernel.hpp>
+#include <test.hpp>
 #include <iostream>
 
 // Main
 int main(int argc, char ** argv)
 {
-    double x = Kernel::testfunction();
+    double x = Test::testfunction();
 
     std::cerr << ">> Testfunction returned: " << x << std::endl;
 

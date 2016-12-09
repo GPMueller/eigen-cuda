@@ -1,13 +1,20 @@
+#ifndef USE_CUDA
+
 #include <kernel.hpp>
 #include <Eigen/Core>
 
+// C++ Version
 namespace Kernel
 {
-    double testfunction()
+    double dot(std::vector<Eigen::Vector3d> v1, std::vector<Eigen::Vector3d> v2)
     {
-        Eigen::Vector3d v1{ 1.0, 1.0, 1.0 };
-        Eigen::Vector3d v2{ -1.0, 1.0, 1.0 };
-        double x = v1.dot(v2);
+        double x=0;
+        for (int i=0; i<v1.size(); ++i)
+        {
+            x += v1[i].dot(v2[i]);
+        }
         return x;
-    } 
+    }
 }
+
+#endif

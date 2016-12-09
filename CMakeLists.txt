@@ -55,16 +55,19 @@ set( CMAKE_DISABLE_IN_SOURCE_BUILD ON )
 ######### CUDA decisions ####################
 if (CORE_USE_CUDA)
     find_package(CUDA REQUIRED)
+    add_definitions(-DUSE_CUDA)
 endif()
 #############################################
 
 #############################################
 set(SOURCE_FILES
-    src/kernel.cpp
+    src/test.cpp
     src/kernel.cu
+    src/kernel.cpp
 )
 
 set(HEADER_FILES
+    include/test.hpp
     include/kernel.hpp
 )
 #############################################
@@ -72,7 +75,13 @@ set(HEADER_FILES
 
 
 #############################################
-add_executable( ${EXECUTABLE_NAME} main.cpp ${SOURCE_FILES} )
+if (CORE_USE_CUDA)
+    include_directories( ${EXECUTABLE_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/thirdparty)
+    cuda_add_executable( ${EXECUTABLE_NAME} main.cpp ${SOURCE_FILES} )
+else()
+    add_executable( ${EXECUTABLE_NAME} main.cpp ${SOURCE_FILES} )
+endif()
+
 target_link_libraries( ${EXECUTABLE_NAME} ${CUDA_LIBRARIES})
 
 target_include_directories( ${EXECUTABLE_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
