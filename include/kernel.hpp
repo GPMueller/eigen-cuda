@@ -7,7 +7,7 @@
 
 namespace Kernel
 {
-    double dot(std::vector<Eigen::Vector3d> v1, std::vector<Eigen::Vector3d> v2);
+    double dot(const std::vector<Eigen::Vector3d> & v1, const std::vector<Eigen::Vector3d> & v2);
 }
 
 #endif

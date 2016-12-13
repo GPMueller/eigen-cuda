@@ -21,7 +21,6 @@ static void HandleError( cudaError_t err, const char *file, int line ) {
 // CUDA Version
 namespace Kernel
 {
-    // TODO: Get this working
     __global__ void cu_dot(Eigen::Vector3d *v1, Eigen::Vector3d *v2, double *out, size_t N)
     {
         int idx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -30,15 +29,10 @@ namespace Kernel
             out[idx] = v1[idx].dot(v2[idx]);
         }
         return;
-        // int idx = blockIdx.x * blockDim.x + threadIdx.x;
-        // if(idx < N)
-        // {
-        //     out[idx] = 33.0;
-        // }
     }
 
     // The wrapper for the calling of the actual kernel
-    double dot(std::vector<Eigen::Vector3d> v1, std::vector<Eigen::Vector3d> v2)
+    double dot(const std::vector<Eigen::Vector3d> & v1, const std::vector<Eigen::Vector3d> & v2)
     {        
         int n = v1.size();
         double *ret = new double[n];
@@ -60,13 +54,13 @@ namespace Kernel
         // Copy to host
         HANDLE_ERROR(cudaMemcpy(ret, dev_ret, sizeof(double)*n, cudaMemcpyDeviceToHost));
 
+        // Reduction of the array
+        for (int i=1; i<n; ++i)
+        {
+            ret[0] += ret[i];
+        }
+
         // Return
-        // std::cerr << "ret =";
-        // for (int i=0; i<n; ++i)
-        // {
-        //     std::cerr << "  " << ret[i];
-        // }
-        // std::cerr << std::endl;
         return ret[0];
     }
 }
