@@ -1,16 +1,5 @@
 #ifdef USE_CUDA
 
-///// Eigen Workaround Stuff
-// See http://eigen.tuxfamily.org/dox/TopicCUDA.html
-// and http://eigen.tuxfamily.org/index.php?title=3.3#Experimental_CUDA_support
-#define EIGEN_DEFAULT_DENSE_INDEX_TYPE int
-// workaround issue between gcc >= 4.7 and cuda 5.5
-#if (defined __GNUC__) && (__GNUC__>4 || __GNUC_MINOR__>=7)
-  #undef _GLIBCXX_ATOMIC_BUILTINS
-  #undef _GLIBCXX_USE_INT128
-#endif
-/////////////////////////////
-
 #include <kernel.hpp>
 #include <Eigen/Core>
 
@@ -66,7 +55,7 @@ namespace Kernel
         HANDLE_ERROR(cudaMemcpy(dev_v2, v2.data(), sizeof(Eigen::Vector3d)*n, cudaMemcpyHostToDevice));
 
         // Dot product
-        cu_dot<<<(n+1023)/1024, 1024>>>(v1.data(), v2.data(), dev_ret, n);
+        cu_dot<<<(n+1023)/1024, 1024>>>(dev_v1, dev_v2, dev_ret, n);
         
         // Copy to host
         HANDLE_ERROR(cudaMemcpy(ret, dev_ret, sizeof(double)*n, cudaMemcpyDeviceToHost));
