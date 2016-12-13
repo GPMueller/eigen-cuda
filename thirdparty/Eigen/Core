@@ -43,10 +43,8 @@
   #else
     #define EIGEN_DEVICE_FUNC
   #endif
-
 #else
   #define EIGEN_DEVICE_FUNC
-
 #endif
 
 // When compiling CUDA device code with NVCC, pull in math functions from the
@@ -147,7 +145,7 @@
     #ifdef __FMA__
       #define EIGEN_VECTORIZE_FMA
     #endif
-    #if defined(__AVX512F__) && defined(EIGEN_ENABLE_AVX512)
+    #if defined(__AVX512F__)
       #define EIGEN_VECTORIZE_AVX512
       #define EIGEN_VECTORIZE_AVX2
       #define EIGEN_VECTORIZE_AVX
@@ -281,6 +279,15 @@
 // required for __cpuid, needs to be included after cmath
 #if EIGEN_COMP_MSVC && EIGEN_ARCH_i386_OR_x86_64 && !EIGEN_OS_WINCE
   #include <intrin.h>
+#endif
+
+#if defined(__SYCL_DEVICE_ONLY__)
+  #undef min
+  #undef max
+  #undef isnan
+  #undef isinf
+  #undef isfinite
+  #include <SYCL/sycl.hpp>
 #endif
 
 /** \brief Namespace containing all symbols from the %Eigen library. */
