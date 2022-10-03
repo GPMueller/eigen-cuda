@@ -8,11 +8,11 @@ The `USE_CUDA` flag switches from the regular C++ (CPU) implementation to the CU
 ## Usage
 Clone this repository, then
 ```shell
-mkdir build && cd build
-cmake -DUSE_CUDA=OFF ..  # or -DUSE_CUDA=ON
-make -j
+cmake -E make_directory build
+cmake . -B build -DUSE_CUDA=OFF # or -DUSE_CUDA=ON
+cmake --build build
 ```
 To run an example, do
 ```shell
-./main
+.build/main
 ```
