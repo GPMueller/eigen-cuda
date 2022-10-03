@@ -1,5 +1,9 @@
-project(eigen-cuda LANGUAGES CXX)
 cmake_minimum_required(VERSION 3.14)
+
+set(CMAKE_DISABLE_SOURCE_CHANGES  ON)
+set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
+
+project(eigen-cuda LANGUAGES CXX)
 
 option(USE_CUDA "Whether to use CUDA" OFF)
 
