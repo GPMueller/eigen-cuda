@@ -9,22 +9,24 @@ option(USE_CUDA "Whether to use CUDA" OFF)
 
 if (USE_CUDA)
     enable_language(CUDA)
-    add_definitions(-DUSE_CUDA)
-endif()
+endif ()
 
 include(FetchContent)
 FetchContent_Declare(
     Eigen3
     GIT_REPOSITORY git@gitlab.com:libeigen/eigen.git
     GIT_TAG master
-)
-
-FetchContent_MakeAvailable(Eigen3)
-
+    )
+    
+    FetchContent_MakeAvailable(Eigen3)
+    
 if (USE_CUDA)
     add_library(test
         ${CMAKE_CURRENT_SOURCE_DIR}/src/kernel.cu
         ${CMAKE_CURRENT_SOURCE_DIR}/src/test.cpp
+    )
+    target_compile_definitions(test PRIVATE
+        USE_CUDA
     )
     set_property(TARGET test
         PROPERTY CUDA_SEPARABLE_COMPILATION ON 
